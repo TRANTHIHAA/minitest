@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout :: head">
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+    <h1>Update Province</h1>
+    <h2 th:if="${message} != null" th:text="${message}"></h2>
+    <form method="post" th:object="${province}" enctype="multipart/form-data">
+        <table class="table table-striped">
+            <tr>
+                <th>Name</th>
+                <td><label><input type="text" th:field="*{name}"></label></td>
+            </tr>
+            <tr>
+                <th>GDP</th>
+                <td><label><input type="text" th:field="*{gdp}"></label></td>
+            </tr>
+
+            <tr>
+                <th>Image</th>
+                <td><label>
+                    <input cols="35" rows="8" type="file" th:field="*{image_Url}"/>
+                </label></td>
+            </tr>
+            <tr>
+                <th>Area</th>
+                <td><label><input type="text" th:field="*{area}"></label></td>
+            </tr>
+            <tr>
+                <th>Popular</th>
+                <td><label><input type="text" th:field="*{popular}"></label></td>
+            </tr>
+            <tr>
+                <th>Country</th>
+                <td>
+                    <label>
+                        <select th:field="*{country}">
+                            <option th:each="c : ${countries}" th:value="${c.getId()}"
+                                    th:text="${c.getName()}"></option>
+                        </select>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button class="btn btn-primary" type="submit"><span>Update</span></button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <button class="btn btn-primary"><a href="/province">Back to home</a></button>
+</div>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout :: header">
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+
+    <h1>List Province</h1>
+    <button class="btn btn-info">
+    <a th:href="@{/province/top4}">top 4 gdp</a>
+    </button>
+    <button class="btn btn-info">
+        <a th:href="@{/province/top4ByA}">top 4 Area</a>
+    </button>
+    <h2 th:if="${message} != null" th:text="${message}"></h2>
+    <div class="row">
+        <div class="col-6">
+            <button class="btn btn-primary"><a th:href="@{/province/create}">Create new province</a></button>
+        </div>
+        <div id="search" class="col-6">
+            <form th:action="@{/province/search}" method="get">
+                <label><input type="text" name="search" th:value="${search}"></label>
+                <button class="btn btn-primary" type="submit">Search</button>
+            </form>
+        </div>
+        <div id="searchByC" class="col-6">
+            <form name='c' th:object="${country}" method='post' th:action="@{/province/searchByC}">
+                <select th:field="*{id}" th:value="searchByC">
+                    <option th:each="c : ${countries}"
+                            th:value="${c.getId()}"
+                            th:text="${c.getName()}">
+                    </option>
+                </select>
+                <input name="submit" type="submit" value="submit" />
+            </form>
+        </div>
+    </div>
+    <table class="table table-striped">
+        <tr>
+            <th>STT</th>
+            <th>Name</th>
+            <th>Popular</th>
+            <th>Area</th>
+            <th>GDP</th>
+            <th>Image</th>
+            <th>Country</th>
+            <th id="action" colspan="3">Action</th>
+        </tr>
+        <tr th:each="p,status : ${provinces}">
+            <td th:text="${status.count}"></td>
+            <td th:text="${p.getName()}"></td>
+            <td th:text="${p.getPopular()}"></td>
+            <td th:text="${p.getArea()}"></td>
+            <td th:text="${p.getGdp()}"></td>
+            <td><img width="200px" height="200px" th:src="@{'../image/' + ${p.getImage()}}" alt=""/></td>
+            <td th:text="${p.getCountry().getName()}"></td>
+            <td>
+                <button class="btn btn-warning">
+                    <a th:href="@{/province/update/{id}(id=${p.getId()})}">Update</a>
+                </button>
+            </td>
+            <td>
+                <button class="btn btn-danger">
+                    <a th:href="@{/province/delete/{id}(id=${p.getId()})}">Delete</a>
+                </button>
+            </td>
+            <td>
+                <button class="btn btn-info">
+                    <a th:href="@{/province/{id}(id=${p.getId()})}">Detail</a>
+                </button>
+            </td>
+        </tr>
+    </table>
+</div>
+<div>
+    <a th:href="@{'/province'(page=${provinces.number - 1},search=${search})}" th:if="${provinces.hasPrevious()}" style="color: black">Previous</a>
+    <span th:text="${provinces.number + 1}" style="color: black"></span>/<span th:text="${provinces.totalPages}" style="color: black"></span>
+    <a th:href="@{'/province'(page=${provinces.number + 1},search=${search})}" th:if="${provinces.hasNext()}" style="color: black">Next</a>
+</div>
+<div>
+    <a th:href="@{'/province/demo'(page=${provinces.number - 1},minGdp=${minGdp}, maxGdp=${maxGdp},
+     minPopular=${minPopular}, maxPopular=${maxPopular}, countryId=${countryId})}" th:if="${provinces.hasPrevious()}" style="color: black">Previous</a>
+    <span th:text="${provinces.number + 1}" style="color: black"></span>/<span th:text="${provinces.totalPages}" style="color: black"></span>
+    <a th:href="@{'/province/demo'(page=${provinces.number + 1},minGdp=${minGdp}, maxGdp=${maxGdp},
+     minPopular=${minPopular}, maxPopular=${maxPopular}, countryId=${countryId})}" th:if="${provinces.hasNext()}" style="color: black">Next</a>
+</div>
+</body>
+</html>
